@@ -46,6 +46,7 @@ def main():
     parser.add_argument("--width", type=int, default=1024)
     parser.add_argument("--iters", type=int, default=1)
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cuda")
+    parser.add_argument("--pnnx_device", choices=["cpu", "cuda"], default=None)
     parser.add_argument("--fp16", action="store_true", help="export fp16 ncnn weights")
     args = parser.parse_args()
 
@@ -70,6 +71,7 @@ def main():
         pt_path.as_posix(),
         input_shapes=[[1, 3, args.height, args.width], [1, 3, args.height, args.width]],
         input_types=["f32", "f32"],
+        device=args.pnnx_device or args.device,
         ncnnparam=ncnn_param.as_posix(),
         ncnnbin=ncnn_bin.as_posix(),
         fp16=args.fp16,
