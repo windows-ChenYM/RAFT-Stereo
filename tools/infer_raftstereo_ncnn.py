@@ -41,7 +41,6 @@ def load_image_chw(path, width, height):
     image = cv2.resize(image, (width, height), interpolation=cv2.INTER_LINEAR)
     image = image.astype(np.float32)
     image = image.transpose(2, 0, 1)
-    image = image[None]
     return np.ascontiguousarray(image)
 
 
@@ -85,6 +84,7 @@ def main():
     parser.add_argument("--left_blob", default=None)
     parser.add_argument("--right_blob", default=None)
     parser.add_argument("--output_blob", default=None)
+    parser.add_argument("--keep_batch", action="store_true")
     parser.add_argument("--vulkan", action="store_true")
     args = parser.parse_args()
 
@@ -100,11 +100,18 @@ def main():
 
     left = load_image_chw(args.left, args.width, args.height)
     right = load_image_chw(args.right, args.width, args.height)
+    if args.keep_batch:
+        left = left[None]
+        right = right[None]
 
     net = ncnn.Net()
     net.opt.use_vulkan_compute = args.vulkan
-    net.load_param(str(param_path))
-    net.load_model(str(bin_path))
+    param_ret = net.load_param(str(param_path))
+    model_ret = net.load_model(str(bin_path))
+    if param_ret != 0:
+        raise RuntimeError(f"ncnn load_param failed with code {param_ret}")
+    if model_ret != 0:
+        raise RuntimeError(f"ncnn load_model failed with code {model_ret}")
 
     extractor = net.create_extractor()
     print(f"input blobs: {left_blob}, {right_blob}")
