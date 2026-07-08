@@ -56,15 +56,19 @@ class RAFTStereo(nn.Module):
         """ Upsample flow field [H/8, W/8, 2] -> [H, W, 2] using convex combination """
         N, D, H, W = flow.shape
         factor = 2 ** self.args.n_downsample
-        mask = mask.view(N, 1, 9, factor, factor, H, W)
-        mask = torch.softmax(mask, dim=2)
+        
+        mask = mask.view(N, 9, factor*factor, H*W)
+        mask = torch.softmax(mask, dim=1)
 
         up_flow = F.unfold(factor * flow, [3,3], padding=1)
-        up_flow = up_flow.view(N, D, 9, 1, 1, H, W)
+        up_flow = up_flow.view(N, D, 9, H*W)
 
-        up_flow = torch.sum(mask * up_flow, dim=2)
-        up_flow = up_flow.permute(0, 1, 4, 2, 5, 3)
-        return up_flow.reshape(N, D, factor*H, factor*W)
+        up_flow = up_flow.permute(0, 3, 1, 2).reshape(N*H*W, D, 9)
+        mask = mask.permute(0, 3, 1, 2).reshape(N*H*W, 9, factor*factor)
+        
+        out = torch.matmul(up_flow, mask)
+        out = out.view(N, H*W, D*factor*factor).permute(0, 2, 1).reshape(N, D*factor*factor, H, W)
+        return F.pixel_shuffle(out, factor)
 
 
     def forward(self, image1, image2, iters=12, flow_init=None, test_mode=False):
@@ -76,11 +80,14 @@ class RAFTStereo(nn.Module):
         # run the context network
         with autocast(enabled=self.args.mixed_precision):
             if self.args.shared_backbone:
-                *cnet_list, x = self.cnet(torch.cat((image1, image2), dim=0), dual_inp=True, num_layers=self.args.n_gru_layers)
-                fmap1, fmap2 = self.conv2(x).split(dim=0, split_size=x.shape[0]//2)
+                *cnet_list, x1 = self.cnet(image1, return_v=True, num_layers=self.args.n_gru_layers)
+                _, x2 = self.cnet(image2, return_v=True, num_layers=self.args.n_gru_layers)
+                fmap1 = self.conv2(x1)
+                fmap2 = self.conv2(x2)
             else:
                 cnet_list = self.cnet(image1, num_layers=self.args.n_gru_layers)
-                fmap1, fmap2 = self.fnet([image1, image2])
+                fmap1 = self.fnet(image1)
+                fmap2 = self.fnet(image2)
             net_list = [torch.tanh(x[0]) for x in cnet_list]
             inp_list = [torch.relu(x[1]) for x in cnet_list]
 
@@ -89,10 +96,12 @@ class RAFTStereo(nn.Module):
 
         if self.args.corr_implementation == "reg": # Default
             corr_block = CorrBlock1D
-            fmap1, fmap2 = fmap1.float(), fmap2.float()
+            if not torch.jit.is_tracing():
+                fmap1, fmap2 = fmap1.float(), fmap2.float()
         elif self.args.corr_implementation == "alt": # More memory efficient than reg
             corr_block = PytorchAlternateCorrBlock1D
-            fmap1, fmap2 = fmap1.float(), fmap2.float()
+            if not torch.jit.is_tracing():
+                fmap1, fmap2 = fmap1.float(), fmap2.float()
         elif self.args.corr_implementation == "reg_cuda": # Faster version of reg
             corr_block = CorrBlockFast1D
         elif self.args.corr_implementation == "alt_cuda": # Faster version of alt
@@ -117,7 +126,10 @@ class RAFTStereo(nn.Module):
                 net_list, up_mask, delta_flow = self.update_block(net_list, inp_list, corr, flow, iter32=self.args.n_gru_layers==3, iter16=self.args.n_gru_layers>=2)
 
             # in stereo mode, project flow onto epipolar
-            delta_flow[:,1] = 0.0
+            if torch.jit.is_tracing():
+                delta_flow = torch.cat([delta_flow[:, :1], delta_flow[:, 1:2] * 0.0], dim=1)
+            else:
+                delta_flow[:,1] = 0.0
 
             # F(t+1) = F(t) + \Delta(t)
             coords1 = coords1 + delta_flow

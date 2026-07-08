@@ -58,7 +58,7 @@ class CorrBlockFast1D:
         fmap2 = fmap2.view(B, D, H, W2)
         corr = torch.einsum('aijk,aijh->ajkh', fmap1, fmap2)
         corr = corr.reshape(B, H, W1, 1, W2).contiguous()
-        return corr / torch.sqrt(torch.tensor(D).float())
+        return corr / (D ** 0.5)
 
 
 class PytorchAlternateCorrBlock1D:
@@ -84,7 +84,7 @@ class PytorchAlternateCorrBlock1D:
             output_corr.append(corr)
         corr = torch.stack(output_corr, dim=1).permute(0,2,3,1)
 
-        return corr / torch.sqrt(torch.tensor(D).float())
+        return corr / (D ** 0.5)
 
     def __call__(self, coords):
         r = self.radius
@@ -104,7 +104,10 @@ class PytorchAlternateCorrBlock1D:
             fmap2 = F.avg_pool2d(fmap2, [1, 2], stride=[1, 2])
             out_pyramid.append(corr)
         out = torch.cat(out_pyramid, dim=-1)
-        return out.permute(0, 3, 1, 2).contiguous().float()
+        out = out.permute(0, 3, 1, 2).contiguous()
+        if not torch.jit.is_tracing():
+            out = out.float()
+        return out
 
 
 class CorrBlock1D:
@@ -143,7 +146,10 @@ class CorrBlock1D:
             out_pyramid.append(corr)
 
         out = torch.cat(out_pyramid, dim=-1)
-        return out.permute(0, 3, 1, 2).contiguous().float()
+        out = out.permute(0, 3, 1, 2).contiguous()
+        if not torch.jit.is_tracing():
+            out = out.float()
+        return out
 
     @staticmethod
     def corr(fmap1, fmap2):
@@ -153,7 +159,7 @@ class CorrBlock1D:
         fmap2 = fmap2.view(B, D, H, W2)
         corr = torch.einsum('aijk,aijh->ajkh', fmap1, fmap2)
         corr = corr.reshape(B, H, W1, 1, W2).contiguous()
-        return corr / torch.sqrt(torch.tensor(D).float())
+        return corr / (D ** 0.5)
 
 
 class AlternateCorrBlock:
@@ -185,4 +191,4 @@ class AlternateCorrBlock:
 
         corr = torch.stack(corr_list, dim=1)
         corr = corr.reshape(B, -1, H, W)
-        return corr / torch.sqrt(torch.tensor(dim).float())
+        return corr / (dim ** 0.5)

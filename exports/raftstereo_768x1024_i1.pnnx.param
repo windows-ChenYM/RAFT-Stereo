@@ -1,0 +1,330 @@
+7767517
+328 334
+pnnx.Input               pnnx_input_0             0 1 0 #0=(1,3,768,1024)f32
+pnnx.Input               pnnx_input_1             0 1 1 #1=(1,3,768,1024)f32
+pnnx.Expression          pnnx_expr_441            1 1 0 2 expr=sub(mul(div(@0,255.0),2),1.0) #0=(1,3,768,1024)f32 #2=(1,3,768,1024)f32
+pnnx.Expression          pnnx_expr_434            1 1 1 3 expr=sub(mul(div(@0,255.0),2),1.0) #1=(1,3,768,1024)f32 #3=(1,3,768,1024)f32
+nn.Conv2d                convbn2d_0               1 1 2 4 bias=True dilation=(1,1) groups=1 in_channels=3 kernel_size=(7,7) out_channels=64 padding=(3,3) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,3,7,7)f32 $input=2 #2=(1,3,768,1024)f32 #4=(1,64,768,1024)f32
+nn.ReLU                  model.cnet.relu1         1 1 4 5 #4=(1,64,768,1024)f32 #5=(1,64,768,1024)f32
+nn.Conv2d                convbn2d_1               1 1 5 6 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 $input=5 #5=(1,64,768,1024)f32 #6=(1,64,768,1024)f32
+nn.ReLU                  model.cnet.layer1.0.relu 1 1 6 7 #6=(1,64,768,1024)f32 #7=(1,64,768,1024)f32
+nn.Conv2d                convbn2d_2               1 1 7 8 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 $input=7 #7=(1,64,768,1024)f32 #8=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_0            1 1 8 9 #8=(1,64,768,1024)f32 #9=(1,64,768,1024)f32
+pnnx.Expression          pnnx_expr_432            2 1 5 9 10 expr=add(@0,@1) #5=(1,64,768,1024)f32 #9=(1,64,768,1024)f32 #10=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_1            1 1 10 11 #10=(1,64,768,1024)f32 #11=(1,64,768,1024)f32
+nn.Conv2d                convbn2d_3               1 1 11 12 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 $input=11 #11=(1,64,768,1024)f32 #12=(1,64,768,1024)f32
+nn.ReLU                  model.cnet.layer1.1.relu 1 1 12 13 #12=(1,64,768,1024)f32 #13=(1,64,768,1024)f32
+nn.Conv2d                convbn2d_4               1 1 13 14 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 $input=13 #13=(1,64,768,1024)f32 #14=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_2            1 1 14 15 #14=(1,64,768,1024)f32 #15=(1,64,768,1024)f32
+pnnx.Expression          pnnx_expr_430            2 1 11 15 16 expr=add(@0,@1) #11=(1,64,768,1024)f32 #15=(1,64,768,1024)f32 #16=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_3            1 1 16 17 #16=(1,64,768,1024)f32 #17=(1,64,768,1024)f32
+nn.Conv2d                convbn2d_5               1 1 17 18 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(96)f32 @weight=(96,64,3,3)f32 $input=17 #17=(1,64,768,1024)f32 #18=(1,96,384,512)f32
+nn.ReLU                  model.cnet.layer2.0.relu 1 1 18 19 #18=(1,96,384,512)f32 #19=(1,96,384,512)f32
+nn.Conv2d                convbn2d_6               1 1 19 20 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 $input=19 #19=(1,96,384,512)f32 #20=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_4            1 1 20 21 #20=(1,96,384,512)f32 #21=(1,96,384,512)f32
+nn.Conv2d                model.cnet.layer2.0.downsample.0 1 1 17 22 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(1,1) out_channels=96 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(96)f32 @weight=(96,64,1,1)f32 #17=(1,64,768,1024)f32 #22=(1,96,384,512)f32
+pnnx.Expression          pnnx_expr_428            2 1 22 21 23 expr=add(@0,@1) #22=(1,96,384,512)f32 #21=(1,96,384,512)f32 #23=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_5            1 1 23 24 #23=(1,96,384,512)f32 #24=(1,96,384,512)f32
+nn.Conv2d                convbn2d_7               1 1 24 25 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 $input=24 #24=(1,96,384,512)f32 #25=(1,96,384,512)f32
+nn.ReLU                  model.cnet.layer2.1.relu 1 1 25 26 #25=(1,96,384,512)f32 #26=(1,96,384,512)f32
+nn.Conv2d                convbn2d_8               1 1 26 27 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 $input=26 #26=(1,96,384,512)f32 #27=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_6            1 1 27 28 #27=(1,96,384,512)f32 #28=(1,96,384,512)f32
+pnnx.Expression          pnnx_expr_426            2 1 24 28 29 expr=add(@0,@1) #24=(1,96,384,512)f32 #28=(1,96,384,512)f32 #29=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_7            1 1 29 30 #29=(1,96,384,512)f32 #30=(1,96,384,512)f32
+nn.Conv2d                convbn2d_9               1 1 30 31 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,96,3,3)f32 $input=30 #30=(1,96,384,512)f32 #31=(1,128,192,256)f32
+nn.ReLU                  model.cnet.layer3.0.relu 1 1 31 32 #31=(1,128,192,256)f32 #32=(1,128,192,256)f32
+nn.Conv2d                convbn2d_10              1 1 32 33 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=32 #32=(1,128,192,256)f32 #33=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_8            1 1 33 34 #33=(1,128,192,256)f32 #34=(1,128,192,256)f32
+nn.Conv2d                model.cnet.layer3.0.downsample.0 1 1 30 35 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(1,1) out_channels=128 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,96,1,1)f32 #30=(1,96,384,512)f32 #35=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_424            2 1 35 34 36 expr=add(@0,@1) #35=(1,128,192,256)f32 #34=(1,128,192,256)f32 #36=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_9            1 1 36 37 #36=(1,128,192,256)f32 #37=(1,128,192,256)f32
+nn.Conv2d                convbn2d_11              1 1 37 38 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=37 #37=(1,128,192,256)f32 #38=(1,128,192,256)f32
+nn.ReLU                  model.cnet.layer3.1.relu 1 1 38 39 #38=(1,128,192,256)f32 #39=(1,128,192,256)f32
+nn.Conv2d                convbn2d_12              1 1 39 40 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=39 #39=(1,128,192,256)f32 #40=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_10           1 1 40 41 #40=(1,128,192,256)f32 #41=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_422            2 1 37 41 42 expr=add(@0,@1) #37=(1,128,192,256)f32 #41=(1,128,192,256)f32 #42=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_11           1 1 42 43 #42=(1,128,192,256)f32 #43=(1,128,192,256)f32
+nn.Conv2d                convbn2d_13              1 1 43 44 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=43 #43=(1,128,192,256)f32 #44=(1,128,192,256)f32
+nn.ReLU                  model.cnet.outputs08.0.0.relu 1 1 44 45 #44=(1,128,192,256)f32 #45=(1,128,192,256)f32
+nn.Conv2d                convbn2d_14              1 1 45 46 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=45 #45=(1,128,192,256)f32 #46=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_12           1 1 46 47 #46=(1,128,192,256)f32 #47=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_420            2 1 43 47 48 expr=add(@0,@1) #43=(1,128,192,256)f32 #47=(1,128,192,256)f32 #48=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_13           1 1 48 49 #48=(1,128,192,256)f32 #49=(1,128,192,256)f32
+nn.Conv2d                model.cnet.outputs08.0.1 1 1 49 50 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #49=(1,128,192,256)f32 #50=(1,128,192,256)f32
+nn.Conv2d                convbn2d_15              1 1 43 51 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=43 #43=(1,128,192,256)f32 #51=(1,128,192,256)f32
+nn.ReLU                  model.cnet.outputs08.1.0.relu 1 1 51 52 #51=(1,128,192,256)f32 #52=(1,128,192,256)f32
+nn.Conv2d                convbn2d_16              1 1 52 53 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=52 #52=(1,128,192,256)f32 #53=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_14           1 1 53 54 #53=(1,128,192,256)f32 #54=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_418            2 1 43 54 55 expr=add(@0,@1) #43=(1,128,192,256)f32 #54=(1,128,192,256)f32 #55=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_15           1 1 55 56 #55=(1,128,192,256)f32 #56=(1,128,192,256)f32
+nn.Conv2d                model.cnet.outputs08.1.1 1 1 56 57 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #56=(1,128,192,256)f32 #57=(1,128,192,256)f32
+nn.Conv2d                convbn2d_17              1 1 43 58 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=43 #43=(1,128,192,256)f32 #58=(1,128,96,128)f32
+nn.ReLU                  model.cnet.layer4.0.relu 1 1 58 59 #58=(1,128,96,128)f32 #59=(1,128,96,128)f32
+nn.Conv2d                convbn2d_18              1 1 59 60 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=59 #59=(1,128,96,128)f32 #60=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_16           1 1 60 61 #60=(1,128,96,128)f32 #61=(1,128,96,128)f32
+nn.Conv2d                model.cnet.layer4.0.downsample.0 1 1 43 62 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(1,1) out_channels=128 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,128,1,1)f32 #43=(1,128,192,256)f32 #62=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_416            2 1 62 61 63 expr=add(@0,@1) #62=(1,128,96,128)f32 #61=(1,128,96,128)f32 #63=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_17           1 1 63 64 #63=(1,128,96,128)f32 #64=(1,128,96,128)f32
+nn.Conv2d                convbn2d_19              1 1 64 65 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=64 #64=(1,128,96,128)f32 #65=(1,128,96,128)f32
+nn.ReLU                  model.cnet.layer4.1.relu 1 1 65 66 #65=(1,128,96,128)f32 #66=(1,128,96,128)f32
+nn.Conv2d                convbn2d_20              1 1 66 67 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=66 #66=(1,128,96,128)f32 #67=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_18           1 1 67 68 #67=(1,128,96,128)f32 #68=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_414            2 1 64 68 69 expr=add(@0,@1) #64=(1,128,96,128)f32 #68=(1,128,96,128)f32 #69=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_19           1 1 69 70 #69=(1,128,96,128)f32 #70=(1,128,96,128)f32
+nn.Conv2d                convbn2d_21              1 1 70 71 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=70 #70=(1,128,96,128)f32 #71=(1,128,96,128)f32
+nn.ReLU                  model.cnet.outputs16.0.0.relu 1 1 71 72 #71=(1,128,96,128)f32 #72=(1,128,96,128)f32
+nn.Conv2d                convbn2d_22              1 1 72 73 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=72 #72=(1,128,96,128)f32 #73=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_20           1 1 73 74 #73=(1,128,96,128)f32 #74=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_412            2 1 70 74 75 expr=add(@0,@1) #70=(1,128,96,128)f32 #74=(1,128,96,128)f32 #75=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_21           1 1 75 76 #75=(1,128,96,128)f32 #76=(1,128,96,128)f32
+nn.Conv2d                model.cnet.outputs16.0.1 1 1 76 77 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #76=(1,128,96,128)f32 #77=(1,128,96,128)f32
+nn.Conv2d                convbn2d_23              1 1 70 78 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=70 #70=(1,128,96,128)f32 #78=(1,128,96,128)f32
+nn.ReLU                  model.cnet.outputs16.1.0.relu 1 1 78 79 #78=(1,128,96,128)f32 #79=(1,128,96,128)f32
+nn.Conv2d                convbn2d_24              1 1 79 80 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=79 #79=(1,128,96,128)f32 #80=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_22           1 1 80 81 #80=(1,128,96,128)f32 #81=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_410            2 1 70 81 82 expr=add(@0,@1) #70=(1,128,96,128)f32 #81=(1,128,96,128)f32 #82=(1,128,96,128)f32
+nn.ReLU                  pnnx_unique_23           1 1 82 83 #82=(1,128,96,128)f32 #83=(1,128,96,128)f32
+nn.Conv2d                model.cnet.outputs16.1.1 1 1 83 84 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #83=(1,128,96,128)f32 #84=(1,128,96,128)f32
+nn.Conv2d                convbn2d_25              1 1 70 85 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=70 #70=(1,128,96,128)f32 #85=(1,128,48,64)f32
+nn.ReLU                  model.cnet.layer5.0.relu 1 1 85 86 #85=(1,128,48,64)f32 #86=(1,128,48,64)f32
+nn.Conv2d                convbn2d_26              1 1 86 87 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=86 #86=(1,128,48,64)f32 #87=(1,128,48,64)f32
+nn.ReLU                  pnnx_unique_24           1 1 87 88 #87=(1,128,48,64)f32 #88=(1,128,48,64)f32
+nn.Conv2d                model.cnet.layer5.0.downsample.0 1 1 70 89 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(1,1) out_channels=128 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,128,1,1)f32 #70=(1,128,96,128)f32 #89=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_408            2 1 89 88 90 expr=add(@0,@1) #89=(1,128,48,64)f32 #88=(1,128,48,64)f32 #90=(1,128,48,64)f32
+nn.ReLU                  pnnx_unique_25           1 1 90 91 #90=(1,128,48,64)f32 #91=(1,128,48,64)f32
+nn.Conv2d                convbn2d_27              1 1 91 92 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=91 #91=(1,128,48,64)f32 #92=(1,128,48,64)f32
+nn.ReLU                  model.cnet.layer5.1.relu 1 1 92 93 #92=(1,128,48,64)f32 #93=(1,128,48,64)f32
+nn.Conv2d                convbn2d_28              1 1 93 94 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 $input=93 #93=(1,128,48,64)f32 #94=(1,128,48,64)f32
+nn.ReLU                  pnnx_unique_26           1 1 94 95 #94=(1,128,48,64)f32 #95=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_406            2 1 91 95 96 expr=add(@0,@1) #91=(1,128,48,64)f32 #95=(1,128,48,64)f32 #96=(1,128,48,64)f32
+nn.ReLU                  pnnx_unique_27           1 1 96 97 #96=(1,128,48,64)f32 #97=(1,128,48,64)f32
+nn.Conv2d                model.cnet.outputs32.0   1 1 97 98 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #97=(1,128,48,64)f32 #98=(1,128,48,64)f32
+nn.Conv2d                model.cnet.outputs32.1   1 1 97 99 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #97=(1,128,48,64)f32 #99=(1,128,48,64)f32
+nn.Conv2d                model.fnet.conv1         1 1 2 100 bias=True dilation=(1,1) groups=1 in_channels=3 kernel_size=(7,7) out_channels=64 padding=(3,3) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,3,7,7)f32 #2=(1,3,768,1024)f32 #100=(1,64,768,1024)f32
+nn.InstanceNorm2d        model.fnet.norm1         1 1 100 101 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #100=(1,64,768,1024)f32 #101=(1,64,768,1024)f32
+nn.ReLU                  model.fnet.relu1         1 1 101 102 #101=(1,64,768,1024)f32 #102=(1,64,768,1024)f32
+nn.Conv2d                model.fnet.layer1.0.conv1 1 1 102 103 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #102=(1,64,768,1024)f32 #103=(1,64,768,1024)f32
+nn.InstanceNorm2d        model.fnet.layer1.0.norm1 1 1 103 104 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #103=(1,64,768,1024)f32 #104=(1,64,768,1024)f32
+nn.ReLU                  model.fnet.layer1.0.relu 1 1 104 105 #104=(1,64,768,1024)f32 #105=(1,64,768,1024)f32
+nn.Conv2d                model.fnet.layer1.0.conv2 1 1 105 106 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #105=(1,64,768,1024)f32 #106=(1,64,768,1024)f32
+nn.InstanceNorm2d        model.fnet.layer1.0.norm2 1 1 106 107 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #106=(1,64,768,1024)f32 #107=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_28           1 1 107 108 #107=(1,64,768,1024)f32 #108=(1,64,768,1024)f32
+pnnx.Expression          pnnx_expr_404            2 1 102 108 109 expr=add(@0,@1) #102=(1,64,768,1024)f32 #108=(1,64,768,1024)f32 #109=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_29           1 1 109 110 #109=(1,64,768,1024)f32 #110=(1,64,768,1024)f32
+nn.Conv2d                model.fnet.layer1.1.conv1 1 1 110 111 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #110=(1,64,768,1024)f32 #111=(1,64,768,1024)f32
+nn.InstanceNorm2d        model.fnet.layer1.1.norm1 1 1 111 112 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #111=(1,64,768,1024)f32 #112=(1,64,768,1024)f32
+nn.ReLU                  model.fnet.layer1.1.relu 1 1 112 113 #112=(1,64,768,1024)f32 #113=(1,64,768,1024)f32
+nn.Conv2d                model.fnet.layer1.1.conv2 1 1 113 114 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #113=(1,64,768,1024)f32 #114=(1,64,768,1024)f32
+nn.InstanceNorm2d        model.fnet.layer1.1.norm2 1 1 114 115 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #114=(1,64,768,1024)f32 #115=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_30           1 1 115 116 #115=(1,64,768,1024)f32 #116=(1,64,768,1024)f32
+pnnx.Expression          pnnx_expr_402            2 1 110 116 117 expr=add(@0,@1) #110=(1,64,768,1024)f32 #116=(1,64,768,1024)f32 #117=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_31           1 1 117 118 #117=(1,64,768,1024)f32 #118=(1,64,768,1024)f32
+nn.Conv2d                model.fnet.layer2.0.conv1 1 1 118 119 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(96)f32 @weight=(96,64,3,3)f32 #118=(1,64,768,1024)f32 #119=(1,96,384,512)f32
+nn.InstanceNorm2d        model.fnet.layer2.0.norm1 1 1 119 120 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #119=(1,96,384,512)f32 #120=(1,96,384,512)f32
+nn.ReLU                  model.fnet.layer2.0.relu 1 1 120 121 #120=(1,96,384,512)f32 #121=(1,96,384,512)f32
+nn.Conv2d                model.fnet.layer2.0.conv2 1 1 121 122 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 #121=(1,96,384,512)f32 #122=(1,96,384,512)f32
+nn.InstanceNorm2d        model.fnet.layer2.0.norm2 1 1 122 123 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #122=(1,96,384,512)f32 #123=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_32           1 1 123 124 #123=(1,96,384,512)f32 #124=(1,96,384,512)f32
+nn.Conv2d                model.fnet.layer2.0.downsample.0 1 1 118 125 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(1,1) out_channels=96 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(96)f32 @weight=(96,64,1,1)f32 #118=(1,64,768,1024)f32 #125=(1,96,384,512)f32
+nn.InstanceNorm2d        model.fnet.layer2.0.downsample.1 1 1 125 126 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #125=(1,96,384,512)f32 #126=(1,96,384,512)f32
+pnnx.Expression          pnnx_expr_400            2 1 126 124 127 expr=add(@0,@1) #126=(1,96,384,512)f32 #124=(1,96,384,512)f32 #127=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_33           1 1 127 128 #127=(1,96,384,512)f32 #128=(1,96,384,512)f32
+nn.Conv2d                model.fnet.layer2.1.conv1 1 1 128 129 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 #128=(1,96,384,512)f32 #129=(1,96,384,512)f32
+nn.InstanceNorm2d        model.fnet.layer2.1.norm1 1 1 129 130 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #129=(1,96,384,512)f32 #130=(1,96,384,512)f32
+nn.ReLU                  model.fnet.layer2.1.relu 1 1 130 131 #130=(1,96,384,512)f32 #131=(1,96,384,512)f32
+nn.Conv2d                model.fnet.layer2.1.conv2 1 1 131 132 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 #131=(1,96,384,512)f32 #132=(1,96,384,512)f32
+nn.InstanceNorm2d        model.fnet.layer2.1.norm2 1 1 132 133 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #132=(1,96,384,512)f32 #133=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_34           1 1 133 134 #133=(1,96,384,512)f32 #134=(1,96,384,512)f32
+pnnx.Expression          pnnx_expr_398            2 1 128 134 135 expr=add(@0,@1) #128=(1,96,384,512)f32 #134=(1,96,384,512)f32 #135=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_35           1 1 135 136 #135=(1,96,384,512)f32 #136=(1,96,384,512)f32
+nn.Conv2d                model.fnet.layer3.0.conv1 1 1 136 137 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,96,3,3)f32 #136=(1,96,384,512)f32 #137=(1,128,192,256)f32
+nn.InstanceNorm2d        model.fnet.layer3.0.norm1 1 1 137 138 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #137=(1,128,192,256)f32 #138=(1,128,192,256)f32
+nn.ReLU                  model.fnet.layer3.0.relu 1 1 138 139 #138=(1,128,192,256)f32 #139=(1,128,192,256)f32
+nn.Conv2d                model.fnet.layer3.0.conv2 1 1 139 140 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #139=(1,128,192,256)f32 #140=(1,128,192,256)f32
+nn.InstanceNorm2d        model.fnet.layer3.0.norm2 1 1 140 141 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #140=(1,128,192,256)f32 #141=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_36           1 1 141 142 #141=(1,128,192,256)f32 #142=(1,128,192,256)f32
+nn.Conv2d                model.fnet.layer3.0.downsample.0 1 1 136 143 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(1,1) out_channels=128 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,96,1,1)f32 #136=(1,96,384,512)f32 #143=(1,128,192,256)f32
+nn.InstanceNorm2d        model.fnet.layer3.0.downsample.1 1 1 143 144 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #143=(1,128,192,256)f32 #144=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_396            2 1 144 142 145 expr=add(@0,@1) #144=(1,128,192,256)f32 #142=(1,128,192,256)f32 #145=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_37           1 1 145 146 #145=(1,128,192,256)f32 #146=(1,128,192,256)f32
+nn.Conv2d                model.fnet.layer3.1.conv1 1 1 146 147 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #146=(1,128,192,256)f32 #147=(1,128,192,256)f32
+nn.InstanceNorm2d        model.fnet.layer3.1.norm1 1 1 147 148 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #147=(1,128,192,256)f32 #148=(1,128,192,256)f32
+nn.ReLU                  model.fnet.layer3.1.relu 1 1 148 149 #148=(1,128,192,256)f32 #149=(1,128,192,256)f32
+nn.Conv2d                model.fnet.layer3.1.conv2 1 1 149 150 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #149=(1,128,192,256)f32 #150=(1,128,192,256)f32
+nn.InstanceNorm2d        model.fnet.layer3.1.norm2 1 1 150 151 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #150=(1,128,192,256)f32 #151=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_38           1 1 151 152 #151=(1,128,192,256)f32 #152=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_394            2 1 146 152 153 expr=add(@0,@1) #146=(1,128,192,256)f32 #152=(1,128,192,256)f32 #153=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_39           1 1 153 154 #153=(1,128,192,256)f32 #154=(1,128,192,256)f32
+nn.Conv2d                model.fnet.conv2         1 1 154 155 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(1,1) out_channels=256 padding=(0,0) padding_mode=zeros stride=(1,1) @bias=(256)f32 @weight=(256,128,1,1)f32 #154=(1,128,192,256)f32 #155=(1,256,192,256)f32
+nn.Conv2d                pnnx_unique_40           1 1 3 156 bias=True dilation=(1,1) groups=1 in_channels=3 kernel_size=(7,7) out_channels=64 padding=(3,3) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,3,7,7)f32 #3=(1,3,768,1024)f32 #156=(1,64,768,1024)f32
+nn.InstanceNorm2d        pnnx_unique_41           1 1 156 157 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #156=(1,64,768,1024)f32 #157=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_42           1 1 157 158 #157=(1,64,768,1024)f32 #158=(1,64,768,1024)f32
+nn.Conv2d                pnnx_unique_43           1 1 158 159 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #158=(1,64,768,1024)f32 #159=(1,64,768,1024)f32
+nn.InstanceNorm2d        pnnx_unique_44           1 1 159 160 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #159=(1,64,768,1024)f32 #160=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_45           1 1 160 161 #160=(1,64,768,1024)f32 #161=(1,64,768,1024)f32
+nn.Conv2d                pnnx_unique_46           1 1 161 162 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #161=(1,64,768,1024)f32 #162=(1,64,768,1024)f32
+nn.InstanceNorm2d        pnnx_unique_47           1 1 162 163 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #162=(1,64,768,1024)f32 #163=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_48           1 1 163 164 #163=(1,64,768,1024)f32 #164=(1,64,768,1024)f32
+pnnx.Expression          pnnx_expr_392            2 1 158 164 165 expr=add(@0,@1) #158=(1,64,768,1024)f32 #164=(1,64,768,1024)f32 #165=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_49           1 1 165 166 #165=(1,64,768,1024)f32 #166=(1,64,768,1024)f32
+nn.Conv2d                pnnx_unique_50           1 1 166 167 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #166=(1,64,768,1024)f32 #167=(1,64,768,1024)f32
+nn.InstanceNorm2d        pnnx_unique_51           1 1 167 168 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #167=(1,64,768,1024)f32 #168=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_52           1 1 168 169 #168=(1,64,768,1024)f32 #169=(1,64,768,1024)f32
+nn.Conv2d                pnnx_unique_53           1 1 169 170 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #169=(1,64,768,1024)f32 #170=(1,64,768,1024)f32
+nn.InstanceNorm2d        pnnx_unique_54           1 1 170 171 affine=False eps=1.000000e-05 num_features=64 track_running_stats=False #170=(1,64,768,1024)f32 #171=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_55           1 1 171 172 #171=(1,64,768,1024)f32 #172=(1,64,768,1024)f32
+pnnx.Expression          pnnx_expr_390            2 1 166 172 173 expr=add(@0,@1) #166=(1,64,768,1024)f32 #172=(1,64,768,1024)f32 #173=(1,64,768,1024)f32
+nn.ReLU                  pnnx_unique_56           1 1 173 174 #173=(1,64,768,1024)f32 #174=(1,64,768,1024)f32
+nn.Conv2d                pnnx_unique_57           1 1 174 175 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(96)f32 @weight=(96,64,3,3)f32 #174=(1,64,768,1024)f32 #175=(1,96,384,512)f32
+nn.InstanceNorm2d        pnnx_unique_58           1 1 175 176 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #175=(1,96,384,512)f32 #176=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_59           1 1 176 177 #176=(1,96,384,512)f32 #177=(1,96,384,512)f32
+nn.Conv2d                pnnx_unique_60           1 1 177 178 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 #177=(1,96,384,512)f32 #178=(1,96,384,512)f32
+nn.InstanceNorm2d        pnnx_unique_61           1 1 178 179 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #178=(1,96,384,512)f32 #179=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_62           1 1 179 180 #179=(1,96,384,512)f32 #180=(1,96,384,512)f32
+nn.Conv2d                pnnx_unique_63           1 1 174 181 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(1,1) out_channels=96 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(96)f32 @weight=(96,64,1,1)f32 #174=(1,64,768,1024)f32 #181=(1,96,384,512)f32
+nn.InstanceNorm2d        pnnx_unique_64           1 1 181 182 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #181=(1,96,384,512)f32 #182=(1,96,384,512)f32
+pnnx.Expression          pnnx_expr_388            2 1 182 180 183 expr=add(@0,@1) #182=(1,96,384,512)f32 #180=(1,96,384,512)f32 #183=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_65           1 1 183 184 #183=(1,96,384,512)f32 #184=(1,96,384,512)f32
+nn.Conv2d                pnnx_unique_66           1 1 184 185 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 #184=(1,96,384,512)f32 #185=(1,96,384,512)f32
+nn.InstanceNorm2d        pnnx_unique_67           1 1 185 186 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #185=(1,96,384,512)f32 #186=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_68           1 1 186 187 #186=(1,96,384,512)f32 #187=(1,96,384,512)f32
+nn.Conv2d                pnnx_unique_69           1 1 187 188 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=96 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(96)f32 @weight=(96,96,3,3)f32 #187=(1,96,384,512)f32 #188=(1,96,384,512)f32
+nn.InstanceNorm2d        pnnx_unique_70           1 1 188 189 affine=False eps=1.000000e-05 num_features=96 track_running_stats=False #188=(1,96,384,512)f32 #189=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_71           1 1 189 190 #189=(1,96,384,512)f32 #190=(1,96,384,512)f32
+pnnx.Expression          pnnx_expr_386            2 1 184 190 191 expr=add(@0,@1) #184=(1,96,384,512)f32 #190=(1,96,384,512)f32 #191=(1,96,384,512)f32
+nn.ReLU                  pnnx_unique_72           1 1 191 192 #191=(1,96,384,512)f32 #192=(1,96,384,512)f32
+nn.Conv2d                pnnx_unique_73           1 1 192 193 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,96,3,3)f32 #192=(1,96,384,512)f32 #193=(1,128,192,256)f32
+nn.InstanceNorm2d        pnnx_unique_74           1 1 193 194 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #193=(1,128,192,256)f32 #194=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_75           1 1 194 195 #194=(1,128,192,256)f32 #195=(1,128,192,256)f32
+nn.Conv2d                pnnx_unique_76           1 1 195 196 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #195=(1,128,192,256)f32 #196=(1,128,192,256)f32
+nn.InstanceNorm2d        pnnx_unique_77           1 1 196 197 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #196=(1,128,192,256)f32 #197=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_78           1 1 197 198 #197=(1,128,192,256)f32 #198=(1,128,192,256)f32
+nn.Conv2d                pnnx_unique_79           1 1 192 199 bias=True dilation=(1,1) groups=1 in_channels=96 kernel_size=(1,1) out_channels=128 padding=(0,0) padding_mode=zeros stride=(2,2) @bias=(128)f32 @weight=(128,96,1,1)f32 #192=(1,96,384,512)f32 #199=(1,128,192,256)f32
+nn.InstanceNorm2d        pnnx_unique_80           1 1 199 200 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #199=(1,128,192,256)f32 #200=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_384            2 1 200 198 201 expr=add(@0,@1) #200=(1,128,192,256)f32 #198=(1,128,192,256)f32 #201=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_81           1 1 201 202 #201=(1,128,192,256)f32 #202=(1,128,192,256)f32
+nn.Conv2d                pnnx_unique_82           1 1 202 203 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #202=(1,128,192,256)f32 #203=(1,128,192,256)f32
+nn.InstanceNorm2d        pnnx_unique_83           1 1 203 204 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #203=(1,128,192,256)f32 #204=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_84           1 1 204 205 #204=(1,128,192,256)f32 #205=(1,128,192,256)f32
+nn.Conv2d                pnnx_unique_85           1 1 205 206 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,128,3,3)f32 #205=(1,128,192,256)f32 #206=(1,128,192,256)f32
+nn.InstanceNorm2d        pnnx_unique_86           1 1 206 207 affine=False eps=1.000000e-05 num_features=128 track_running_stats=False #206=(1,128,192,256)f32 #207=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_87           1 1 207 208 #207=(1,128,192,256)f32 #208=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_382            2 1 202 208 209 expr=add(@0,@1) #202=(1,128,192,256)f32 #208=(1,128,192,256)f32 #209=(1,128,192,256)f32
+nn.ReLU                  pnnx_unique_88           1 1 209 210 #209=(1,128,192,256)f32 #210=(1,128,192,256)f32
+nn.Conv2d                pnnx_unique_89           1 1 210 211 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(1,1) out_channels=256 padding=(0,0) padding_mode=zeros stride=(1,1) @bias=(256)f32 @weight=(256,128,1,1)f32 #210=(1,128,192,256)f32 #211=(1,256,192,256)f32
+F.tanh                   F.tanh_127               1 1 50 212 $input=50 #50=(1,128,192,256)f32 #212=(1,128,192,256)f32
+F.tanh                   F.tanh_128               1 1 77 213 $input=77 #77=(1,128,96,128)f32 #213=(1,128,96,128)f32
+F.tanh                   F.tanh_129               1 1 98 214 $input=98 #98=(1,128,48,64)f32 #214=(1,128,48,64)f32
+F.relu                   F.relu_112               1 1 57 215 $input=57 #57=(1,128,192,256)f32 #215=(1,128,192,256)f32
+F.relu                   F.relu_113               1 1 84 216 $input=84 #84=(1,128,96,128)f32 #216=(1,128,96,128)f32
+F.relu                   F.relu_114               1 1 99 217 $input=99 #99=(1,128,48,64)f32 #217=(1,128,48,64)f32
+nn.Conv2d                model.context_zqr_convs.0 1 1 215 218 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=384 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(384)f32 @weight=(384,128,3,3)f32 #215=(1,128,192,256)f32 #218=(1,384,192,256)f32
+torch.split              torch.split_62           1 3 218 219 220 221 dim=1 split_size_or_sections=128 $tensor=218 #218=(1,384,192,256)f32 #219=(1,128,192,256)f32 #220=(1,128,192,256)f32 #221=(1,128,192,256)f32
+nn.Conv2d                model.context_zqr_convs.1 1 1 216 222 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=384 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(384)f32 @weight=(384,128,3,3)f32 #216=(1,128,96,128)f32 #222=(1,384,96,128)f32
+torch.split              torch.split_63           1 3 222 223 224 225 dim=1 split_size_or_sections=128 $tensor=222 #222=(1,384,96,128)f32 #223=(1,128,96,128)f32 #224=(1,128,96,128)f32 #225=(1,128,96,128)f32
+nn.Conv2d                model.context_zqr_convs.2 1 1 217 226 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=384 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(384)f32 @weight=(384,128,3,3)f32 #217=(1,128,48,64)f32 #226=(1,384,48,64)f32
+torch.split              torch.split_64           1 3 226 227 228 229 dim=1 split_size_or_sections=128 $tensor=226 #226=(1,384,48,64)f32 #227=(1,128,48,64)f32 #228=(1,128,48,64)f32 #229=(1,128,48,64)f32
+torch.einsum             torch.einsum_110         2 1 155 211 230 equation=imjk,imjl->ijkl #155=(1,256,192,256)f32 #211=(1,256,192,256)f32 #230=(1,192,256,256)f32
+Tensor.reshape           Tensor.reshape_78        1 1 230 231 shape=(1,192,256,1,256) $input=230 #230=(1,192,256,256)f32 #231=(1,192,256,1,256)f32
+pnnx.Expression          pnnx_expr_363            1 1 231 232 expr=div(@0,16.0) #231=(1,192,256,1,256)f32 #232=(1,192,256,1,256)f32
+Tensor.reshape           Tensor.reshape_79        1 1 232 233 shape=(49152,1,1,256) $input=232 #232=(1,192,256,1,256)f32 #233=(49152,1,1,256)f32
+F.avg_pool2d             F.avg_pool2d_137         1 1 233 234 ceil_mode=False count_include_pad=True divisor_override=None kernel_size=(1,2) padding=(0,0) stride=(1,2) $input=233 #233=(49152,1,1,256)f32 #234=(49152,1,1,128)f32
+F.avg_pool2d             F.avg_pool2d_138         1 1 234 235 ceil_mode=False count_include_pad=True divisor_override=None kernel_size=(1,2) padding=(0,0) stride=(1,2) $input=234 #234=(49152,1,1,128)f32 #235=(49152,1,1,64)f32
+F.avg_pool2d             F.avg_pool2d_139         1 1 235 236 ceil_mode=False count_include_pad=True divisor_override=None kernel_size=(1,2) padding=(0,0) stride=(1,2) $input=235 #235=(49152,1,1,64)f32 #236=(49152,1,1,32)f32
+pnnx.Attribute           pnnx_fold_coords0.1      0 1 237 @data=(1,2,192,256)f32 #237=(1,2,192,256)f32
+pnnx.Attribute           pnnx_fold_grid.1         0 1 238 @data=(49152,1,9,2)f32 #238=(49152,1,9,2)f32
+F.grid_sample            F.grid_sample_142        2 1 233 238 239 align_corners=True mode=bilinear padding_mode=zeros $input=233 $grid=238 #233=(49152,1,1,256)f32 #238=(49152,1,9,2)f32 #239=(49152,1,1,9)f32
+Tensor.reshape           Tensor.reshape_90        1 1 239 240 shape=(1,192,256,9) $input=239 #239=(49152,1,1,9)f32 #240=(1,192,256,9)f32
+pnnx.Attribute           pnnx_fold_grid0.1        0 1 241 @data=(49152,1,9,2)f32 #241=(49152,1,9,2)f32
+F.grid_sample            F.grid_sample_143        2 1 234 241 242 align_corners=True mode=bilinear padding_mode=zeros $input=234 $grid=241 #234=(49152,1,1,128)f32 #241=(49152,1,9,2)f32 #242=(49152,1,1,9)f32
+Tensor.reshape           Tensor.reshape_92        1 1 242 243 shape=(1,192,256,9) $input=242 #242=(49152,1,1,9)f32 #243=(1,192,256,9)f32
+pnnx.Attribute           pnnx_fold_grid1.1        0 1 244 @data=(49152,1,9,2)f32 #244=(49152,1,9,2)f32
+F.grid_sample            F.grid_sample_144        2 1 235 244 245 align_corners=True mode=bilinear padding_mode=zeros $input=235 $grid=244 #235=(49152,1,1,64)f32 #244=(49152,1,9,2)f32 #245=(49152,1,1,9)f32
+Tensor.reshape           Tensor.reshape_94        1 1 245 246 shape=(1,192,256,9) $input=245 #245=(49152,1,1,9)f32 #246=(1,192,256,9)f32
+pnnx.Attribute           pnnx_fold_grid2.1        0 1 247 @data=(49152,1,9,2)f32 #247=(49152,1,9,2)f32
+F.grid_sample            F.grid_sample_145        2 1 236 247 248 align_corners=True mode=bilinear padding_mode=zeros $input=236 $grid=247 #236=(49152,1,1,32)f32 #247=(49152,1,9,2)f32 #248=(49152,1,1,9)f32
+Tensor.reshape           Tensor.reshape_96        1 1 248 249 shape=(1,192,256,9) $input=248 #248=(49152,1,1,9)f32 #249=(1,192,256,9)f32
+torch.cat                torch.cat_49             4 1 240 243 246 249 250 dim=-1 #240=(1,192,256,9)f32 #243=(1,192,256,9)f32 #246=(1,192,256,9)f32 #249=(1,192,256,9)f32 #250=(1,192,256,36)f32
+Tensor.permute           Tensor.permute_72        1 1 250 251 dims=(0,3,1,2) $input=250 #250=(1,192,256,36)f32 #251=(1,36,192,256)f32
+pnnx.Attribute           pnnx_fold_input5.3       0 1 252 @data=(1,2,192,256)f32 #252=(1,2,192,256)f32
+F.avg_pool2d             F.avg_pool2d_140         1 1 213 253 ceil_mode=False count_include_pad=True divisor_override=None kernel_size=(3,3) padding=(1,1) stride=(2,2) $input=213 #213=(1,128,96,128)f32 #253=(1,128,48,64)f32
+torch.cat                torch.cat_51             2 1 214 253 254 dim=1 #214=(1,128,48,64)f32 #253=(1,128,48,64)f32 #254=(1,256,48,64)f32
+nn.Conv2d                model.update_block.gru32.convz 1 1 254 255 bias=True dilation=(1,1) groups=1 in_channels=256 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,256,3,3)f32 #254=(1,256,48,64)f32 #255=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_145            2 1 255 227 256 expr=add(@0,@1) #255=(1,128,48,64)f32 #227=(1,128,48,64)f32 #256=(1,128,48,64)f32
+F.sigmoid                F.sigmoid_120            1 1 256 257 $input=256 #256=(1,128,48,64)f32 #257=(1,128,48,64)f32
+nn.Conv2d                model.update_block.gru32.convr 1 1 254 258 bias=True dilation=(1,1) groups=1 in_channels=256 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,256,3,3)f32 #254=(1,256,48,64)f32 #258=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_143            2 1 258 228 259 expr=add(@0,@1) #258=(1,128,48,64)f32 #228=(1,128,48,64)f32 #259=(1,128,48,64)f32
+F.sigmoid                F.sigmoid_121            1 1 259 260 $input=259 #259=(1,128,48,64)f32 #260=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_142            2 1 260 214 261 expr=mul(@0,@1) #260=(1,128,48,64)f32 #214=(1,128,48,64)f32 #261=(1,128,48,64)f32
+torch.cat                torch.cat_52             2 1 261 253 262 dim=1 #261=(1,128,48,64)f32 #253=(1,128,48,64)f32 #262=(1,256,48,64)f32
+nn.Conv2d                model.update_block.gru32.convq 1 1 262 263 bias=True dilation=(1,1) groups=1 in_channels=256 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,256,3,3)f32 #262=(1,256,48,64)f32 #263=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_139            2 1 263 229 264 expr=add(@0,@1) #263=(1,128,48,64)f32 #229=(1,128,48,64)f32 #264=(1,128,48,64)f32
+F.tanh                   F.tanh_130               1 1 264 265 $input=264 #264=(1,128,48,64)f32 #265=(1,128,48,64)f32
+pnnx.Expression          pnnx_expr_132            3 1 257 214 265 266 expr=add(mul(sub(1,@0),@1),mul(@0,@2)) #257=(1,128,48,64)f32 #214=(1,128,48,64)f32 #265=(1,128,48,64)f32 #266=(1,128,48,64)f32
+F.avg_pool2d             F.avg_pool2d_141         1 1 212 267 ceil_mode=False count_include_pad=True divisor_override=None kernel_size=(3,3) padding=(1,1) stride=(2,2) $input=212 #212=(1,128,192,256)f32 #267=(1,128,96,128)f32
+F.upsample               F.upsample_135           1 1 266 268 align_corners=True mode=bilinear size=(96,128) $input=266 #266=(1,128,48,64)f32 #268=(1,128,96,128)f32
+torch.cat                torch.cat_53             2 1 267 268 269 dim=1 #267=(1,128,96,128)f32 #268=(1,128,96,128)f32 #269=(1,256,96,128)f32
+torch.cat                torch.cat_54             2 1 213 269 270 dim=1 #213=(1,128,96,128)f32 #269=(1,256,96,128)f32 #270=(1,384,96,128)f32
+nn.Conv2d                model.update_block.gru16.convz 1 1 270 271 bias=True dilation=(1,1) groups=1 in_channels=384 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,384,3,3)f32 #270=(1,384,96,128)f32 #271=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_125            2 1 271 223 272 expr=add(@0,@1) #271=(1,128,96,128)f32 #223=(1,128,96,128)f32 #272=(1,128,96,128)f32
+F.sigmoid                F.sigmoid_122            1 1 272 273 $input=272 #272=(1,128,96,128)f32 #273=(1,128,96,128)f32
+nn.Conv2d                model.update_block.gru16.convr 1 1 270 274 bias=True dilation=(1,1) groups=1 in_channels=384 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,384,3,3)f32 #270=(1,384,96,128)f32 #274=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_123            2 1 274 224 275 expr=add(@0,@1) #274=(1,128,96,128)f32 #224=(1,128,96,128)f32 #275=(1,128,96,128)f32
+F.sigmoid                F.sigmoid_123            1 1 275 276 $input=275 #275=(1,128,96,128)f32 #276=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_122            2 1 276 213 277 expr=mul(@0,@1) #276=(1,128,96,128)f32 #213=(1,128,96,128)f32 #277=(1,128,96,128)f32
+torch.cat                torch.cat_55             2 1 277 269 278 dim=1 #277=(1,128,96,128)f32 #269=(1,256,96,128)f32 #278=(1,384,96,128)f32
+nn.Conv2d                model.update_block.gru16.convq 1 1 278 279 bias=True dilation=(1,1) groups=1 in_channels=384 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,384,3,3)f32 #278=(1,384,96,128)f32 #279=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_119            2 1 279 225 280 expr=add(@0,@1) #279=(1,128,96,128)f32 #225=(1,128,96,128)f32 #280=(1,128,96,128)f32
+F.tanh                   F.tanh_131               1 1 280 281 $input=280 #280=(1,128,96,128)f32 #281=(1,128,96,128)f32
+pnnx.Expression          pnnx_expr_112            3 1 273 213 281 282 expr=add(mul(sub(1,@0),@1),mul(@0,@2)) #273=(1,128,96,128)f32 #213=(1,128,96,128)f32 #281=(1,128,96,128)f32 #282=(1,128,96,128)f32
+nn.Conv2d                model.update_block.encoder.convc1 1 1 251 283 bias=True dilation=(1,1) groups=1 in_channels=36 kernel_size=(1,1) out_channels=64 padding=(0,0) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,36,1,1)f32 #251=(1,36,192,256)f32 #283=(1,64,192,256)f32
+F.relu                   F.relu_115               1 1 283 284 $input=283 #283=(1,64,192,256)f32 #284=(1,64,192,256)f32
+nn.Conv2d                model.update_block.encoder.convc2 1 1 284 285 bias=True dilation=(1,1) groups=1 in_channels=64 kernel_size=(3,3) out_channels=64 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(64)f32 @weight=(64,64,3,3)f32 #284=(1,64,192,256)f32 #285=(1,64,192,256)f32
+F.relu                   F.relu_116               1 1 285 286 $input=285 #285=(1,64,192,256)f32 #286=(1,64,192,256)f32
+pnnx.Attribute           pnnx_fold_flo.1          0 1 287 @data=(1,64,192,256)f32 #287=(1,64,192,256)f32
+torch.cat                torch.cat_56             2 1 286 287 288 dim=1 #286=(1,64,192,256)f32 #287=(1,64,192,256)f32 #288=(1,128,192,256)f32
+nn.Conv2d                model.update_block.encoder.conv 1 1 288 289 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=126 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(126)f32 @weight=(126,128,3,3)f32 #288=(1,128,192,256)f32 #289=(1,126,192,256)f32
+F.relu                   F.relu_119               1 1 289 290 $input=289 #289=(1,126,192,256)f32 #290=(1,126,192,256)f32
+torch.cat                torch.cat_57             2 1 290 252 291 dim=1 #290=(1,126,192,256)f32 #252=(1,2,192,256)f32 #291=(1,128,192,256)f32
+F.upsample               F.upsample_136           1 1 282 292 align_corners=True mode=bilinear size=(192,256) $input=282 #282=(1,128,96,128)f32 #292=(1,128,192,256)f32
+torch.cat                torch.cat_58             2 1 291 292 293 dim=1 #291=(1,128,192,256)f32 #292=(1,128,192,256)f32 #293=(1,256,192,256)f32
+torch.cat                torch.cat_59             2 1 212 293 294 dim=1 #212=(1,128,192,256)f32 #293=(1,256,192,256)f32 #294=(1,384,192,256)f32
+nn.Conv2d                model.update_block.gru08.convz 1 1 294 295 bias=True dilation=(1,1) groups=1 in_channels=384 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,384,3,3)f32 #294=(1,384,192,256)f32 #295=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_103            2 1 295 219 296 expr=add(@0,@1) #295=(1,128,192,256)f32 #219=(1,128,192,256)f32 #296=(1,128,192,256)f32
+F.sigmoid                F.sigmoid_124            1 1 296 297 $input=296 #296=(1,128,192,256)f32 #297=(1,128,192,256)f32
+nn.Conv2d                model.update_block.gru08.convr 1 1 294 298 bias=True dilation=(1,1) groups=1 in_channels=384 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,384,3,3)f32 #294=(1,384,192,256)f32 #298=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_101            2 1 298 220 299 expr=add(@0,@1) #298=(1,128,192,256)f32 #220=(1,128,192,256)f32 #299=(1,128,192,256)f32
+F.sigmoid                F.sigmoid_125            1 1 299 300 $input=299 #299=(1,128,192,256)f32 #300=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_100            2 1 300 212 301 expr=mul(@0,@1) #300=(1,128,192,256)f32 #212=(1,128,192,256)f32 #301=(1,128,192,256)f32
+torch.cat                torch.cat_60             2 1 301 293 302 dim=1 #301=(1,128,192,256)f32 #293=(1,256,192,256)f32 #302=(1,384,192,256)f32
+nn.Conv2d                model.update_block.gru08.convq 1 1 302 303 bias=True dilation=(1,1) groups=1 in_channels=384 kernel_size=(3,3) out_channels=128 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(128)f32 @weight=(128,384,3,3)f32 #302=(1,384,192,256)f32 #303=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_97             2 1 303 221 304 expr=add(@0,@1) #303=(1,128,192,256)f32 #221=(1,128,192,256)f32 #304=(1,128,192,256)f32
+F.tanh                   F.tanh_132               1 1 304 305 $input=304 #304=(1,128,192,256)f32 #305=(1,128,192,256)f32
+pnnx.Expression          pnnx_expr_90             3 1 297 212 305 306 expr=add(mul(sub(1,@0),@1),mul(@0,@2)) #297=(1,128,192,256)f32 #212=(1,128,192,256)f32 #305=(1,128,192,256)f32 #306=(1,128,192,256)f32
+nn.Conv2d                model.update_block.flow_head.conv1 1 1 306 307 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=256 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(256)f32 @weight=(256,128,3,3)f32 #306=(1,128,192,256)f32 #307=(1,256,192,256)f32
+nn.ReLU                  model.update_block.flow_head.relu 1 1 307 308 #307=(1,256,192,256)f32 #308=(1,256,192,256)f32
+nn.Conv2d                model.update_block.flow_head.conv2 1 1 308 309 bias=True dilation=(1,1) groups=1 in_channels=256 kernel_size=(3,3) out_channels=2 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(2)f32 @weight=(2,256,3,3)f32 #308=(1,256,192,256)f32 #309=(1,2,192,256)f32
+nn.Conv2d                model.update_block.mask.0 1 1 306 310 bias=True dilation=(1,1) groups=1 in_channels=128 kernel_size=(3,3) out_channels=256 padding=(1,1) padding_mode=zeros stride=(1,1) @bias=(256)f32 @weight=(256,128,3,3)f32 #306=(1,128,192,256)f32 #310=(1,256,192,256)f32
+nn.ReLU                  model.update_block.mask.1 1 1 310 311 #310=(1,256,192,256)f32 #311=(1,256,192,256)f32
+nn.Conv2d                model.update_block.mask.2 1 1 311 312 bias=True dilation=(1,1) groups=1 in_channels=256 kernel_size=(1,1) out_channels=144 padding=(0,0) padding_mode=zeros stride=(1,1) @bias=(144)f32 @weight=(144,256,1,1)f32 #311=(1,256,192,256)f32 #312=(1,144,192,256)f32
+pnnx.Expression          pnnx_expr_89             1 1 312 313 expr=mul(@0,0.25) #312=(1,144,192,256)f32 #313=(1,144,192,256)f32
+torch.tensor_split       Tensor.slice_105         1 2 309 314 315 dim=1 indices=(1) #309=(1,2,192,256)f32 #314=(1,1,192,256)f32 #315=(1,1,192,256)f32
+pnnx.Expression          pnnx_expr_72             1 1 315 316 expr=mul(@0,0.0) #315=(1,1,192,256)f32 #316=(1,1,192,256)f32
+torch.cat                torch.cat_61             2 1 314 316 317 dim=1 #314=(1,1,192,256)f32 #316=(1,1,192,256)f32 #317=(1,2,192,256)f32
+pnnx.Expression          pnnx_expr_67             3 1 237 317 237 318 expr=sub(add(@0,@1),@2) #237=(1,2,192,256)f32 #317=(1,2,192,256)f32 #237=(1,2,192,256)f32 #318=(1,2,192,256)f32
+Tensor.reshape           Tensor.reshape_97        1 1 313 319 shape=(1,9,16,49152) $input=313 #313=(1,144,192,256)f32 #319=(1,9,16,49152)f32
+F.softmax                F.softmax_126            1 1 319 320 dim=1 $input=319 #319=(1,9,16,49152)f32 #320=(1,9,16,49152)f32
+pnnx.Expression          pnnx_expr_45             1 1 318 321 expr=mul(@0,4) #318=(1,2,192,256)f32 #321=(1,2,192,256)f32
+F.unfold                 F.unfold_134             1 1 321 322 dilation=(1,1) kernel_size=(3,3) padding=(1,1) stride=(1,1) $input=321 #321=(1,2,192,256)f32 #322=(1,18,49152)f32
+Tensor.reshape           Tensor.reshape_98        1 1 322 323 shape=(1,2,9,49152) $input=322 #322=(1,18,49152)f32 #323=(1,2,9,49152)f32
+Tensor.permute           Tensor.permute_73        1 1 323 324 dims=(0,3,1,2) $input=323 #323=(1,2,9,49152)f32 #324=(1,49152,2,9)f32
+Tensor.reshape           Tensor.reshape_84        1 1 324 325 shape=(49152,2,9) $input=324 #324=(1,49152,2,9)f32 #325=(49152,2,9)f32
+Tensor.permute           Tensor.permute_74        1 1 320 326 dims=(0,3,1,2) $input=320 #320=(1,9,16,49152)f32 #326=(1,49152,9,16)f32
+Tensor.reshape           Tensor.reshape_85        1 1 326 327 shape=(49152,9,16) $input=326 #326=(1,49152,9,16)f32 #327=(49152,9,16)f32
+torch.matmul             torch.matmul_111         2 1 325 327 328 $input=325 $other=327 #325=(49152,2,9)f32 #327=(49152,9,16)f32 #328=(49152,2,16)f32
+Tensor.reshape           Tensor.reshape_99        1 1 328 329 shape=(1,49152,32) $input=328 #328=(49152,2,16)f32 #329=(1,49152,32)f32
+Tensor.permute           Tensor.permute_75        1 1 329 330 dims=(0,2,1) $input=329 #329=(1,49152,32)f32 #330=(1,32,49152)f32
+Tensor.reshape           Tensor.reshape_86        1 1 330 331 shape=(1,32,192,256) $input=330 #330=(1,32,49152)f32 #331=(1,32,192,256)f32
+F.pixel_shuffle          F.pixel_shuffle_133      1 1 331 332 upscale_factor=4 $input=331 #331=(1,32,192,256)f32 #332=(1,2,768,1024)f32
+Tensor.slice             Tensor.slice_109         1 1 332 333 dim=1 end=1 start=0 step=1 $input=332 #332=(1,2,768,1024)f32 #333=(1,1,768,1024)f32
+pnnx.Output              pnnx_output_0            1 0 333 #333=(1,1,768,1024)f32
