@@ -18,9 +18,10 @@ from tools.export_raftstereo_torchscript import (  # noqa: E402
 from core.raft_stereo import RAFTStereo  # noqa: E402
 
 
-def export_torchscript(restore_ckpt, output, height, width, iters, device_name):
+def export_torchscript(restore_ckpt, output, height, width, iters, device_name, ncnn_friendly_corr):
     device = torch.device(device_name if device_name == "cpu" or torch.cuda.is_available() else "cpu")
-    model = RAFTStereo(model_args())
+    corr_implementation = "reg_nogrid" if ncnn_friendly_corr else "reg"
+    model = RAFTStereo(model_args(corr_implementation=corr_implementation))
     model.load_state_dict(load_checkpoint(restore_ckpt, device), strict=True)
     model.to(device).eval()
     fuse_downsample_batch_norm(model)
@@ -48,10 +49,17 @@ def main():
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cuda")
     parser.add_argument("--pnnx_device", choices=["cpu", "cuda"], default=None)
     parser.add_argument("--fp16", action="store_true", help="export fp16 ncnn weights")
+    parser.add_argument(
+        "--ncnn_friendly_corr",
+        action="store_true",
+        help="replace grid_sample correlation lookup; only valid for iters=1 exports",
+    )
     args = parser.parse_args()
 
     if args.height % 32 != 0 or args.width % 32 != 0:
         raise ValueError("height and width must be divisible by 32")
+    if args.ncnn_friendly_corr and args.iters != 1:
+        raise ValueError("--ncnn_friendly_corr is only valid with --iters 1")
 
     prefix = Path(args.output_prefix)
     pt_path = prefix.with_suffix(".pt")
@@ -65,6 +73,7 @@ def main():
         args.width,
         args.iters,
         args.device,
+        args.ncnn_friendly_corr,
     )
 
     pnnx.convert(

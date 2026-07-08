@@ -25,10 +25,10 @@ class RAFTStereoExportWrapper(nn.Module):
         return disparity
 
 
-def model_args():
+def model_args(corr_implementation="reg"):
     return SimpleNamespace(
         hidden_dims=[128, 128, 128],
-        corr_implementation="reg",
+        corr_implementation=corr_implementation,
         shared_backbone=False,
         corr_levels=4,
         corr_radius=4,

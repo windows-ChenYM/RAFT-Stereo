@@ -162,6 +162,66 @@ class CorrBlock1D:
         return corr / (D ** 0.5)
 
 
+class CorrBlock1DNoGridSample:
+    """Correlation lookup without grid_sample/gather for fixed-shape ncnn export.
+
+    This mirrors CorrBlock1D for the first RAFT iteration, where coords are the
+    initial integer x-grid. It avoids GridSample by applying fixed one-hot
+    interpolation masks along the correlation-volume width.
+    """
+
+    def __init__(self, fmap1, fmap2, num_levels=4, radius=4):
+        self.num_levels = num_levels
+        self.radius = radius
+        self.corr_pyramid = []
+
+        corr = CorrBlock1D.corr(fmap1, fmap2)
+        batch, h1, w1, _, w2 = corr.shape
+        corr = corr.reshape(batch, h1, w1, w2)
+
+        self.corr_pyramid.append(corr)
+        corr_pool = corr.reshape(batch * h1 * w1, 1, 1, w2)
+        for i in range(self.num_levels):
+            corr_pool = F.avg_pool2d(corr_pool, [1, 2], stride=[1, 2])
+            corr_lvl = corr_pool.reshape(batch, h1, w1, w2 // 2 ** (i + 1))
+            self.corr_pyramid.append(corr_lvl)
+
+    def __call__(self, coords):
+        r = self.radius
+        batch, _, h1, w1 = coords.shape
+        out_pyramid = []
+
+        for i in range(self.num_levels):
+            corr = self.corr_pyramid[i]
+            w2 = corr.shape[-1]
+
+            x = torch.arange(w1, device=coords.device, dtype=torch.float32)
+            x = x.view(1, 1, w1, 1) / 2 ** i
+            dx = torch.arange(-r, r + 1, device=coords.device, dtype=torch.float32)
+            dx = dx.view(1, 1, 1, 2 * r + 1)
+            x = x + dx
+
+            x0 = torch.floor(x)
+            x1 = x0 + 1.0
+            wx = x - x0
+
+            cols = torch.arange(w2, device=coords.device, dtype=torch.float32)
+            cols = cols.view(1, 1, w2, 1)
+            x0 = x0.view(1, w1, 1, 2 * r + 1)
+            x1 = x1.view(1, w1, 1, 2 * r + 1)
+            wx = wx.view(1, w1, 1, 2 * r + 1).to(dtype=corr.dtype)
+
+            mask0 = (cols == x0).to(dtype=corr.dtype) * (1.0 - wx)
+            mask1 = (cols == x1).to(dtype=corr.dtype) * wx
+            mask = (mask0 + mask1).view(1, 1, w1, w2, 2 * r + 1)
+
+            sampled = (corr.unsqueeze(-1) * mask).sum(dim=3)
+            out_pyramid.append(sampled)
+
+        out = torch.cat(out_pyramid, dim=-1)
+        return out.permute(0, 3, 1, 2).contiguous()
+
+
 class AlternateCorrBlock:
     def __init__(self, fmap1, fmap2, num_levels=4, radius=4):
         raise NotImplementedError

@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from core.update import BasicMultiUpdateBlock
 from core.extractor import BasicEncoder, MultiBasicEncoder, ResidualBlock
-from core.corr import CorrBlock1D, PytorchAlternateCorrBlock1D, CorrBlockFast1D, AlternateCorrBlock
+from core.corr import CorrBlock1D, CorrBlock1DNoGridSample, PytorchAlternateCorrBlock1D, CorrBlockFast1D, AlternateCorrBlock
 from core.utils.utils import coords_grid, upflow8
 
 
@@ -96,6 +96,10 @@ class RAFTStereo(nn.Module):
 
         if self.args.corr_implementation == "reg": # Default
             corr_block = CorrBlock1D
+            if not torch.jit.is_tracing():
+                fmap1, fmap2 = fmap1.float(), fmap2.float()
+        elif self.args.corr_implementation == "reg_nogrid": # ncnn export path for iters=1
+            corr_block = CorrBlock1DNoGridSample
             if not torch.jit.is_tracing():
                 fmap1, fmap2 = fmap1.float(), fmap2.float()
         elif self.args.corr_implementation == "alt": # More memory efficient than reg
