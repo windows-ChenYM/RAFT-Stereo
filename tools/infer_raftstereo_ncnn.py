@@ -84,6 +84,7 @@ def main():
     parser.add_argument("--left_blob", default=None)
     parser.add_argument("--right_blob", default=None)
     parser.add_argument("--output_blob", default=None)
+    parser.add_argument("--debug_extract", nargs="*", default=None)
     parser.add_argument("--keep_batch", action="store_true")
     parser.add_argument("--vulkan", action="store_true")
     args = parser.parse_args()
@@ -119,6 +120,16 @@ def main():
     print(f"left shape: {left.shape}, right shape: {right.shape}")
     extractor.input(left_blob, ncnn.Mat(left).clone())
     extractor.input(right_blob, ncnn.Mat(right).clone())
+
+    if args.debug_extract:
+        for blob_name in args.debug_extract:
+            ret, blob = extractor.extract(blob_name)
+            if ret == 0:
+                blob_array = np.array(blob)
+                print(f"debug extract {blob_name}: ok shape={blob_array.shape} size={blob_array.size}")
+            else:
+                print(f"debug extract {blob_name}: failed code={ret}")
+        return
 
     ret, output = extractor.extract(output_blob)
     if ret != 0:
