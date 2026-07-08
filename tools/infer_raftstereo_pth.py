@@ -55,8 +55,8 @@ def main():
     parser.add_argument("--iters", type=int, default=1)
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cuda")
     parser.add_argument("--out", default="outputs/pth_disp_vis.png")
-    parser.add_argument("--save_raw", default="outputs/pth_disp_raw.npy")
-    parser.add_argument("--save_positive", default="outputs/pth_disp_positive.npy")
+    parser.add_argument("--save_raw", default=None)
+    parser.add_argument("--save_positive", default=None)
     parser.add_argument("--save_fullres_positive", default=None)
     parser.add_argument("--context_norm", default="batch", choices=["group", "batch", "instance", "none"])
     parser.add_argument("--mixed_precision", action="store_true")
@@ -94,8 +94,12 @@ def main():
     positive_disparity = -raw_disparity
 
     out_path = Path(args.out)
-    raw_path = Path(args.save_raw)
-    positive_path = Path(args.save_positive)
+    raw_path = Path(args.save_raw) if args.save_raw else out_path.with_name(f"{out_path.stem}_raw.npy")
+    positive_path = (
+        Path(args.save_positive)
+        if args.save_positive
+        else out_path.with_name(f"{out_path.stem}_positive.npy")
+    )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     raw_path.parent.mkdir(parents=True, exist_ok=True)
     positive_path.parent.mkdir(parents=True, exist_ok=True)
