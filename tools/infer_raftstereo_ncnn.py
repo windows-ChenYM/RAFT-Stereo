@@ -41,6 +41,7 @@ def load_image_chw(path, width, height):
     image = cv2.resize(image, (width, height), interpolation=cv2.INTER_LINEAR)
     image = image.astype(np.float32)
     image = image.transpose(2, 0, 1)
+    image = image[None]
     return np.ascontiguousarray(image)
 
 
@@ -106,6 +107,9 @@ def main():
     net.load_model(str(bin_path))
 
     extractor = net.create_extractor()
+    print(f"input blobs: {left_blob}, {right_blob}")
+    print(f"output blob: {output_blob}")
+    print(f"left shape: {left.shape}, right shape: {right.shape}")
     extractor.input(left_blob, ncnn.Mat(left).clone())
     extractor.input(right_blob, ncnn.Mat(right).clone())
 
@@ -127,8 +131,6 @@ def main():
     np.save(positive_path, positive_disparity)
     cv2.imwrite(str(out_path), colorize_disparity(positive_disparity))
 
-    print(f"input blobs: {left_blob}, {right_blob}")
-    print(f"output blob: {output_blob}")
     print(f"saved visualization: {out_path}")
     print(f"saved raw disparity: {raw_path}")
     print(f"saved positive disparity: {positive_path}")
